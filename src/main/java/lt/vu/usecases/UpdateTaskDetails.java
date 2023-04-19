@@ -2,7 +2,6 @@ package lt.vu.usecases;
 
 import lombok.Getter;
 import lombok.Setter;
-import lt.vu.entities.Member;
 import lt.vu.entities.Task;
 import lt.vu.interceptors.LoggedInvocation;
 import lt.vu.persistence.TasksDAO;
@@ -29,7 +28,6 @@ public class UpdateTaskDetails implements Serializable {
 
     @PostConstruct
     private void init(){
-        System.out.println("UpdateTaskDetails INIT CALLED");
         Map<String, String> requestParameters =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         Integer taskId = Integer.parseInt(requestParameters.get("taskId"));
