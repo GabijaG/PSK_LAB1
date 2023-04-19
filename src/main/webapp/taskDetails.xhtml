@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:head>
+    <h:outputStylesheet library="css" name="nav-stylesheet.css"/>
+</h:head>
+<h:body>
+    <h2>Task's #{updateTaskDetails.task.name} details:</h2>
+    <h3>Assigned members:</h3>
+    <ol>
+        <ui:repeat value="#{membersForTask.task.assignedMembers}" var="member">
+            <li>
+                <h:link value="#{member.username}" outcome="members?memberId=#{member.id}" />
+            </li>
+        </ui:repeat>
+    </ol>
+    <h3>Update task details:</h3>
+    <h:form>
+        <h:outputText value="Change task name: "/>
+        <h:inputText a:placeholder="Enter the value" value="#{updateTaskDetails.task.name}" required="true" />
+        <h:commandButton value="Update" actionListener="#{updateTaskDetails.updateTaskName}"
+                         action="taskDetails">
+            <f:param name="taskId" value="#{membersForTask.task.id}" />
+            <f:param name="memberId" value="#{param['memberId']}" />
+        </h:commandButton>
+    </h:form><br/><br/>
+    <h:form>
+        <h:outputText value="Assign member: "/>
+        <h:inputText a:placeholder="Enter the value" value="#{membersForTask.memberToCreate.username}" required="true" />
+        <h:commandButton value="Assign"
+                         actionListener="#{membersForTask.assignMember()}"
+                         action="taskDetails">
+            <f:param name="taskId" value="#{membersForTask.task.id}" />
+            <f:param name="memberId" value="#{param['memberId']}" />
+        </h:commandButton><br/><br/>
+    </h:form>
+
+    <h:link outcome="members" value="Back to member page">
+        <f:param name="memberId" value="#{param['memberId']}" />
+    </h:link>
+</h:body>
+</html>

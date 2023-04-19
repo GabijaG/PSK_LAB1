@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+<h:head/>
+<h:body>
+    <h2>Teams:</h2>
+    <ol>
+        <ui:repeat value="#{taskListsMyBatis.allLists}" var="taskList">
+            <li><h:link value="#{taskList.name}" outcome="tasks?taskListId=#{taskList.id}" /></li>
+        </ui:repeat>
+    </ol>
+    <h:form>
+        <h:inputText value="#{taskListsMyBatis.taskListToCreate.name}" required="true" />
+        <h:commandButton value="Add a new list" action="#{taskListsMyBatis.createList}" />
+    </h:form>
+    <h:link value="Back to index" outcome="/index"/>
+</h:body>
+</html>

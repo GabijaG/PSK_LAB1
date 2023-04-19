@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head/>
+<h:body>
+    <h2>Tasks in #{tasksForList.taskList.name} list:</h2>
+    <ol>
+        <ui:repeat value="#{tasksForList.taskList.tasks}" var="task">
+            <li>
+                <h:link value="#{task.name} #{task.status}" outcome="taskDetails?taskId=#{task.id}" />
+            </li>
+        </ui:repeat>
+    </ol>
+    <h:form>
+        <h:inputText a:placeholder="name" value="#{tasksForList.taskToCreate.name}" required="true" />
+        <h:commandButton value="Add task to the list"
+                         actionListener="#{tasksForList.createTask}"
+                         action="#{'tasks?faces-redirect=true&amp;taskListId='.concat(tasksForList.taskList.id)}">
+                <f:param name="taskListId" value="#{tasksForList.taskList.id}" />
+        </h:commandButton>
+    </h:form>
+    <h:link outcome="index" value="Back to task lists page"/>
+</h:body>
+</html>

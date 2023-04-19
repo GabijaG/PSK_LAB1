@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <h:outputStylesheet library="css" name="table-stylesheet.css"/>
+</h:head>
+<h:body>
+<!--    <h:outputText value="#{request.contextPath}" />-->
+    <f:param name="memberId" value="#{listsForMembers.member.id}" />
+    <h2>Member's #{members.getMember().username} lists:</h2>
+    <h:form>
+        <h:outputText value="Create new tasks list: "/>
+        <h:inputText a:placeholder="name" value="#{listsForMembers.listToCreate.name}" required="true" />
+        <h:commandButton value="Add a task list"
+                         actionListener="#{listsForMembers.createTaskList}"
+                         action="#{'members?faces-redirect=true&amp;memberId='.concat(listsForMembers.member.id)}">
+            <f:param name="memberId" value="#{request.getParameter('memberId')}" />
+        </h:commandButton>
+    </h:form><br/>
+    <h:form>
+        <h:outputText value="Delete list: "/>
+        <h:inputText a:placeholder="name" value="#{listsForMembers.listToDelete.name}" required="true" />
+        <h:commandButton value="Delete"
+                         actionListener="#{listsForMembers.deleteTaskList}"
+                         action="#{'members?faces-redirect=true&amp;memberId='.concat(listsForMembers.member.id)}">
+            <f:param name="memberId" value="#{request.getParameter('memberId')}" />
+        </h:commandButton>
+    </h:form>
+
+    <div class="task-list-container">
+        <c:forEach var="taskList" items="#{listsForMembers.allLists}">
+            <f:param name="taskListId" value="#{taskList.id}" />
+            <div class="task-list">
+                <div class="task-list-header">
+                    <h2 class="task-list-name">#{taskList.name}</h2>
+                </div>
+                <ul class="task-list-tasks">
+                    <c:forEach var="task" items="#{taskList.tasks}">
+                        <li class="task">
+                            <h:link value="#{task.name} #{task.status}" outcome="taskDetails?taskId=#{task.id}">
+                                <f:param name="memberId" value="#{listsForMembers.member.id}" />
+                            </h:link>
+                            <h:form>
+                                <h:commandButton value="Delete"
+                                                 actionListener="#{tasksForList.deleteTask(task.id)}"
+                                                 action="#{'members?faces-redirect=true&amp;memberId='.concat(listsForMembers.member.id)}">
+                                    <f:param name="memberId" value="#{listsForMembers.member.id}" />
+                                </h:commandButton>
+                            </h:form>
+                        </li>
+                    </c:forEach>
+                </ul>
+                <h:form>
+                    <h:inputText a:placeholder="name" value="#{tasksForList.taskToCreate.name}" required="true" />
+                    <h:commandButton value="Add a task"
+                                     actionListener="#{tasksForList.createTask(taskList.id)}"
+                                     action="#{'members?faces-redirect=true&amp;memberId='.concat(listsForMembers.member.id)}">
+                        <f:param name="memberId" value="#{listsForMembers.member.id}" />
+                    </h:commandButton>
+                </h:form>
+            </div>
+        </c:forEach>
+    </div>
+    <h:link outcome="index" value="Back to main page"/>
+</h:body>
+</html>
